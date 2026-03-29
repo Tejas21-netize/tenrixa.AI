@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0b1020;
+
+  --card: #ffffff;
+  --card-foreground: #0b1020;
+
+  --popover: #ffffff;
+  --popover-foreground: #0b1020;
+
+  --primary: #6d28d9;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f2f0ff;
+  --secondary-foreground: #2a1f4a;
+
+  --muted: #f3f4f6;
+  --muted-foreground: #4b5563;
+
+  --accent: #f2f0ff;
+  --accent-foreground: #2a1f4a;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #7c3aed;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #070914;
+    --foreground: #e5e7eb;
+
+    --card: #0d1224;
+    --card-foreground: #e5e7eb;
+
+    --popover: #0d1224;
+    --popover-foreground: #e5e7eb;
+
+    --primary: #8b5cf6;
+    --primary-foreground: #070914;
+
+    --secondary: #1f1636;
+    --secondary-foreground: #e9d5ff;
+
+    --muted: #0f172a;
+    --muted-foreground: #94a3b8;
+
+    --accent: #1f1636;
+    --accent-foreground: #e9d5ff;
+
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+
+    --border: #243043;
+    --input: #243043;
+    --ring: #a78bfa;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
