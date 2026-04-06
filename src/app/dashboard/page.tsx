@@ -1,36 +1,35 @@
-import { redirect } from 'next/navigation';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
-import DashboardClient from '@/components/dashboard/dashboard-client';
+import { redirect } from "next/navigation";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+import DashboardClient from "@/components/dashboard/dashboard-client";
 
 export default async function DashboardPage() {
   const cookieStore = cookies();
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name) {
+        get(name: string) {
           return cookieStore.get(name)?.value;
-        },
-        set(name, value, options) {
-          cookieStore.set({ name, value, ...options });
-        },
-        remove(name, options) {
-          cookieStore.set({ name, value: '', ...options });
         },
       },
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect('/login');
+    redirect("/login");
   }
 
-  return <DashboardClient user={user} />;
+  // Fetching initial data to prevent layout shift or empty states
+  const { data: profile } = await supabase
+    .from("user_profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  return <DashboardClient user={user} profile={profile} />;
 }
