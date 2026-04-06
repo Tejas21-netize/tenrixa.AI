@@ -38,16 +38,17 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirectedFrom", pathname);
-    return NextResponse.redirect(loginUrl);
-  }
+  // Allow the pricing page to be viewed without a login
+if (!user && !pathname.startsWith('/pricing')) {
+  const loginUrl = new URL("/login", request.url);
+  loginUrl.searchParams.set("redirectedFrom", pathname);
+  return NextResponse.redirect(loginUrl);
+}
 
   return response;
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*","/pricing"],
 };
 
