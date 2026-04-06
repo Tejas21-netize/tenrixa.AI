@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import Link from "next/link";
+import DashboardClient from "@/components/dashboard/dashboard-client";
 
 export default async function DashboardPage() {
   const cookieStore = cookies();
@@ -23,23 +23,25 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
+  // Fetching initial data to prevent layout shift or empty states
+  const { data: profile } = await supabase
+    .from("user_profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  const { data: credits } = await supabase
+    .from("tender_credits")
+    .select("*")
+    .eq("user_id", user.id)
+    .single();
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      <p className="mb-8 text-gray-600">Welcome to Tenrixa AI. Your account is active.</p>
-      
-      <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg flex justify-between items-center">
-        <div>
-          <h2 className="font-semibold text-blue-800">Plan: Free Trial</h2>
-          <p className="text-blue-600 text-sm">3 Credits Remaining</p>
-        </div>
-        <Link 
-          href="/pricing" 
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-all"
-        >
-          Upgrade to Pro
-        </Link>
-      </div>
+    <div className="mx-auto max-w-7xl px-4 py-8">
+      <DashboardClient 
+        initialProfile={profile || { plan: 'Free', free_analyses_used: 0, free_analyses_limit: 3 }}
+        initialCredits={credits || { remaining_credits: 3 }}
+      />
     </div>
   );
 }
