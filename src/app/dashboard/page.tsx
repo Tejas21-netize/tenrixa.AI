@@ -18,7 +18,10 @@ export default async function DashboardPage() {
   );
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+
+  if (!user) {
+    redirect("/login");
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
