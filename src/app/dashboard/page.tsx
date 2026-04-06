@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { DashboardClient } from "@/components/dashboard/dashboard-client";
+import DashboardClient from "@/components/dashboard/dashboard-client";
 import Link from "next/link";
+
 export default async function DashboardPage() {
   const supabase = createSupabaseServerClient();
   const {
@@ -10,8 +11,7 @@ export default async function DashboardPage() {
 
   if (!user) redirect("/login");
 
-  // Basic entitlement preview. Full enforcement happens in API routes.
- return (
+  return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="flex justify-end mb-6">
         <Link 
@@ -35,4 +35,3 @@ export default async function DashboardPage() {
     </div>
   );
 }
-
