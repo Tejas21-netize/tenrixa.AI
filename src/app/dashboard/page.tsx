@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { DashboardClient } from "@/components/dashboard/dashboard-client";
-
+import Link from "next/link";
 export default async function DashboardPage() {
   const supabase = createSupabaseServerClient();
   const {
@@ -11,23 +11,26 @@ export default async function DashboardPage() {
   if (!user) redirect("/login");
 
   // Basic entitlement preview. Full enforcement happens in API routes.
-  const profileResp = await supabase
-    .from("user_profiles")
-    .select("plan, free_analyses_used, free_analyses_limit")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  const creditsResp = await supabase
-    .from("tender_credits")
-    .select("remaining_credits")
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-  return (
+ return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <DashboardClient
-        initialProfile={profileResp.data ?? null}
-        initialCredits={creditsResp.data ?? null}
+      <div className="flex justify-end mb-6">
+        <Link 
+          href="/pricing" 
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+        >
+          Upgrade to Pro
+        </Link>
+      </div>
+      
+      <DashboardClient 
+        initialProfile={{ 
+          plan: 'Free', 
+          free_analyses_used: 0, 
+          free_analyses_limit: 3 
+        }}
+        initialCredits={{ 
+          remaining_credits: 3 
+        }}
       />
     </div>
   );
